@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "experimentor"
+version = "0.0.1"
+description = "A library that can help run experiments automactically."
+authors = [
+    {name = "Lau Yee-Yu", email = "liuyiyu2003@126.com"}
+]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[project.scripts]
+tqdm = "tqdm.cli:main"
