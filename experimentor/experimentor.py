@@ -38,8 +38,8 @@ class Experimentor:
 
     def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
         total = count(self.config)
-        with tqdm.tqdm(total=total, position=0,
-                       leave=True, file=sys.stdout) as pbar:
+        with tqdm.tqdm(total=total, position=0, leave=True,
+                       file=sys.stdout, dynamic_ncols=True) as pbar:
             with redirect_stream_for_tqdm():
                 try:
                     for title, conf in ConfigureIterable(self.config):
