@@ -11,6 +11,9 @@ class CliFile(object):
     def __init__(self, file):
         self.file = file
 
+    def flush(self):
+        self.file.flush()
+
     def write(self, x):
         if len(x.rstrip()) > 0:
             tqdm.tqdm.write(x, file=self.file)
