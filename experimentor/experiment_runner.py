@@ -37,16 +37,3 @@ class BashExperimentRunner(BaseExperimentRunner):
                 result = subprocess.run(command, shell=True, stdout=f)
         if result.returncode != 0:
             raise ValueError(f"{command} returns non-zero value: {result.returncode}")
-
-
-# This class is solely for testing purposes
-class EchoExperimentRunner(BaseExperimentRunner):
-    def __init__(self):
-        super().__init__()
-
-    def run_experiment(self, title: str, config: dict, file: str | None):
-        print(f"Title: {title}")
-        print(f"Config: {config}")
-        print(f"File: {file}")
-        import time
-        time.sleep(1)

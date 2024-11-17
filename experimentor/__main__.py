@@ -1,11 +1,9 @@
 import argparse
 import json
 
-from experimentor.const import DEFAULT_MAX_TRIALS
+from .const import DEFAULT_MAX_TRIALS
 from .experiment_runner import BashExperimentRunner
 from .experimentor import run_experiments
-
-__all__ = ['main']
 
 
 def main():
