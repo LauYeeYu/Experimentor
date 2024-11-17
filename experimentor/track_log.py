@@ -2,6 +2,21 @@ import os
 import datetime
 
 class TrackLog:
+    """Track the log files for experiments
+
+    On initialization, it will create a lock file to make sure that only one
+    process is using the directory. The lock file will be removed when the
+    object is deleted.
+
+    When running experiments, a log file will be created for each experiment.
+    The file name is the current time in the format of '%Y_%m_%d_%H_%M_%S.log'
+    in UTC time to avoid conflicts. The log file will be stored in a
+    subdirectory named after the experiment title.
+
+    You may inherit this class to change the behavior, but please be careful
+    because improperly changing the behavior might lead to some unexpected
+    results.
+    """
     def __init__(self, root_dir: str):
         self.root_dir = root_dir
         self.init_dir()
@@ -30,3 +45,14 @@ class TrackLog:
         with open(file_path, 'w'):
             pass
         return file_path
+
+
+def get_latest_track_log_file(root_dir: str, name: str) -> str | None:
+    subdir = os.path.join(root_dir, name)
+    if not os.path.exists(subdir):
+        return None
+    files = os.listdir(subdir)
+    if not files:
+        return None
+    files.sort()
+    return os.path.join(subdir, files[-1])
