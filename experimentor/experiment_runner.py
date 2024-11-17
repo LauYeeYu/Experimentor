@@ -15,21 +15,24 @@ class BaseExperimentRunner:
         raise NotImplementedError
 
 
-class BashExperimentRunner(BaseExperimentRunner):
-    def __init__(self, script: str):
+class SimpleCommandRunner(BaseExperimentRunner):
+    def __init__(self, base_command: str):
         super().__init__()
-        self.script = script
+        self.base_command = base_command
 
     def run_experiment(self, title: str, config: dict, file: str | None):
         """
-        Run the experiment with bash script.
+        Run the experiment with command line.
         :param title: The title of the experiment.
         :param config: The configuration of the experiment.
         :param file: The file to store the output. If None, there's nowhere to store the output.
         """
-        command = f'bash {self.script}'
+        command = f'{self.base_command}'
         for key, value in config.items():
-            command += f' --{key} {value}'
+            if len(key) == 1: # short option
+                command += f' -{key} {value}'
+            else:
+                command += f' --{key} {value}'
         if file is None:
             result = subprocess.run(command, shell=True)
         else:
