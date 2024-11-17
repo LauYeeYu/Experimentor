@@ -22,6 +22,16 @@ def run_experiments(config: list, func: BaseExperimentRunner, log_dir: str | Non
 
 
 class Experimentor:
+    """A class to run a series of experiments.
+
+    To construct an Experimentor object, you need to provide a list of
+    configurations, a runner class (derived from
+    `experimentor.BaseExperimentRunner`) to run the experiment, and
+    optionally a log directory. The configuration is a list of dictionaries.
+    Each entry in the list means one parameter set.
+
+    If you don't want to store logs, you can set the `log_dir` to None.
+    """
     def __init__(self, config: list, runner: BaseExperimentRunner, log_dir: str | None):
         """
         Run experiments with the given configuration and function.
