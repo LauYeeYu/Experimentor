@@ -1,7 +1,7 @@
 import tqdm
 import sys
 
-from .cli import redirect_stream_for_tqdm
+from .cli import tqdm_file, redirect_stream_for_tqdm
 from .configure_production import ConfigureIterable, ExperimentorError
 from .const import DEFAULT_MAX_TRIALS
 from .experiment_runner import BaseExperimentRunner
@@ -53,8 +53,13 @@ class Experimentor:
         :param skip_exist: Whether to skip the configuration if the log file already exists.
         """
         total = count(self.config)
-        with tqdm.tqdm(total=total, leave=True,
-                       file=sys.stdout, dynamic_ncols=True) as pbar:
+        disable_tqdm = False
+        progress_bar_file = tqdm_file()
+        if progress_bar_file is None:
+            progress_bar_file = sys.stdout
+            disable_tqdm = True
+        with tqdm.tqdm(total=total, leave=True, disable=disable_tqdm,
+                       file=progress_bar_file, dynamic_ncols=True) as pbar:
             with redirect_stream_for_tqdm():
                 try:
                     for title, conf in ConfigureIterable(self.config):
