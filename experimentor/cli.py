@@ -16,7 +16,7 @@ import contextlib
 import sys
 
 
-def tqdm_file():
+def tqdm_file() -> type(sys.stdout) | None:
     """
     Get the file to display the progress bar.
     :return: If stdout is a tty, return stdout. If stdout is not but stderr
