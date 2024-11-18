@@ -8,17 +8,17 @@ from .experiment_runner import BaseExperimentRunner
 from .track_log import TrackLog
 
 
-def run_experiments(config: list, func: BaseExperimentRunner, log_dir: str | None,
+def run_experiments(config: list, runner: BaseExperimentRunner, log_dir: str | None,
                     max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
     """
     Run experiments with the given configuration and function.
     :param config: A list of dictionaries.
-    :param func:
+    :param runner: A class to run the experiment. Should be inherited from `experimentor.BaseExperimentRunner`.
     :param log_dir: The directory to store logs. If None, no log will be stored.
     :param max_trial: The maximum number of trials for each configuration.
     :param skip_exist: Skip the configuration if the log file already exists.
     """
-    Experimentor(config, func, log_dir).run_experiments(max_trial, skip_exist)
+    Experimentor(config, runner, log_dir).run_experiments(max_trial, skip_exist)
 
 
 class Experimentor:
