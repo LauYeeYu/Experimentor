@@ -24,7 +24,7 @@ class TrackLog:
         Initialize the TrackLog object.
         :param root_dir: The root directory to store the log files.
         :param disable_lock: Whether to disable the lock file used to
-         guarantee that only one process is using the directory.
+            guarantee that only one process is using the directory.
         """
         self.root_dir = root_dir
         self.disable_lock = disable_lock
@@ -59,7 +59,28 @@ class TrackLog:
         return file_path
 
 
+def has_track_log(root_dir: str, name: str) -> bool:
+    """
+    Check if there's a log file for the experiment with the given name.
+    :param root_dir: The root directory to store the log files.
+    :param name: The name of the experiment.
+    :return: Whether there's a log file for the given experiment.
+    """
+    subdir = os.path.join(root_dir, name)
+    if not os.path.exists(root_dir):
+        return False
+    files = os.listdir(subdir)
+    return len(files) > 0
+
+
 def get_latest_track_log_file(root_dir: str, name: str) -> str | None:
+    """
+    Get the latest log file for the experiment with the given name.
+    :param root_dir: The root directory to store the log files.
+    :param name: The name of the experiment.
+    :return: If there's no log file for the given experiment, return None.
+        Otherwise, return the path to the latest log file.
+    """
     subdir = os.path.join(root_dir, name)
     if not os.path.exists(subdir):
         return None
