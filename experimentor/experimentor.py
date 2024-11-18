@@ -47,6 +47,11 @@ class Experimentor:
             self.track_log = TrackLog(log_dir)
 
     def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
+        """
+        Run experiments with the given configuration and function.
+        :param max_trial: The maximum number of trials for each configuration.
+        :param skip_exist: Whether to skip the configuration if the log file already exists.
+        """
         total = count(self.config)
         with tqdm.tqdm(total=total, position=0, leave=True,
                        file=sys.stdout, dynamic_ncols=True) as pbar:
@@ -76,6 +81,12 @@ class Experimentor:
                     raise
 
     def run_single_experiment(self, title, config, skip_exist):
+        """
+        Run a single experiment.
+        :param title: The title of the experiment.
+        :param config: The configuration of the experiment.
+        :param skip_exist: Whether to skip the configuration if the log file already exists.
+        """
         # Create log file
         file = None
         if self.track_log is not None:
@@ -93,6 +104,11 @@ class Experimentor:
 
 
 def count(config) -> int:
+    """
+    Count the number of configurations.
+    :param config: The configuration list.
+    :return: The number of configurations.
+    """
     if len(config) == 0:
         return 0
     num = len(config[0])

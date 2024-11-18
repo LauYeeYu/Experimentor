@@ -1,7 +1,19 @@
+"""
+This module provides a class that can be iterated to get all possible
+configurations.
+"""
+
 class ExperimentorError(Exception):
+    """
+    The exception class for the Experimentor.
+    """
     pass
 
+
 class ConfigureIterable:
+    """
+    An iterable class that generates all possible configurations.
+    """
     class ConfigurePair:
         def __init__(self, key, value):
             self.key = key
