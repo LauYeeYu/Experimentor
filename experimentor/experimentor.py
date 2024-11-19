@@ -10,7 +10,7 @@ from .track_log import TrackLog
 
 def run_experiments(config: list, runner: BaseExperimentRunner,
                     log_dir: str | None, max_trial=DEFAULT_MAX_TRIALS,
-                    skip_exist=False):
+                    skip_exist=False, track_log: TrackLog | None = None):
     """Run experiments with the given configuration and function.
 
     The function will initialize an `Experimentor` object and run the experiments.
@@ -22,8 +22,13 @@ def run_experiments(config: list, runner: BaseExperimentRunner,
         stored.
     :param max_trial: The maximum number of trials for each configuration.
     :param skip_exist: Skip the configuration if the log file already exists.
+    :param track_log: Specify the track log object. If None and `log_dir` is
+        not None, a new track log object will be created. If None and `log_dir`
+        is None, no track log will be created.
     """
-    Experimentor(config, runner, log_dir).run_experiments(max_trial, skip_exist)
+    Experimentor(
+        config, runner, log_dir, track_log
+    ).run_experiments(max_trial, skip_exist)
 
 
 class Experimentor:
@@ -38,7 +43,7 @@ class Experimentor:
     If you don't want to store logs, you can set the `log_dir` to None.
     """
     def __init__(self, config: list, runner: BaseExperimentRunner,
-                 log_dir: str | None):
+                 log_dir: str | None, track_log: TrackLog | None = None):
         """Init the Experimentor class with the given configuration
         and function.
 
@@ -47,13 +52,16 @@ class Experimentor:
             from BaseExperimentRunner.
         :param log_dir: The directory to store logs. If None, no log will
             be stored.
+        :param track_log: Specify the track log object. If None and `log_dir`
+            is not None, a new track log object will be created. If None and
+            `log_dir` is None, no track log will be created.
         """
         self.config = config
         self.runner = runner
-        if log_dir is None:
-            self.track_log = None
-        else:
-            self.track_log = TrackLog(log_dir)
+        self.track_log = track_log
+        if self.track_log is None:
+            if log_dir is not None:
+                self.track_log = TrackLog(log_dir)
 
     def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
         """Run experiments with the given configuration and function.
