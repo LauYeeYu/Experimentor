@@ -54,26 +54,26 @@ class TrackLog:
         except FileExistsError:
             raise ValueError("Another process is using the directory")
 
-    def add_log_file(self, name: str, skip_exist: bool) -> str | None:
+    def add_log_file(self, name: str, skip_if_exists: bool) -> str | None:
         """Add a log file for the experiment with the given name.
 
         This function will create a file named after the current time in the
         format of '%Y_%m_%d_%H_%M_%S.log' in UTC time. If the directory for
         the experiment does not exist, it will be created. If the directory
         already has files, the function will skip creating the log file if
-        `skip_exist` is true.
+        `skip_if_exists` is true.
 
         :param name: The name of the experiment.
-        :param skip_exist: Skip creating the log file if the directory already
+        :param skip_if_exists: Skip creating the log file if the directory already
             has files.
         :return: If the log file is created, return the path to the file.
             Otherwise, return None.
         """
         subdir = os.path.join(self.root_dir, name)
         os.makedirs(subdir, exist_ok=True)
-        if skip_exist and len(os.listdir(subdir)) > 0:
+        if skip_if_exists and len(os.listdir(subdir)) > 0:
             return None
-        file_name = datetime.datetime.now(datetime.UTC).strftime('%Y_%m_%d_%H_%M_%S') + '.log'
+        file_name = f'{datetime.datetime.now(datetime.UTC).strftime('%Y_%m_%d_%H_%M_%S')}.log'
         file_path = os.path.join(subdir, file_name)
         with open(file_path, 'w'):
             pass

@@ -10,7 +10,7 @@ from .track_log import TrackLog
 
 def run_experiments(config: list, runner: BaseExperimentRunner,
                     log_dir: str | None, max_trial=DEFAULT_MAX_TRIALS,
-                    skip_exist=False, track_log: TrackLog | None = None):
+                    skip_if_exists=False, track_log: TrackLog | None = None):
     """Run experiments with the given configuration and function.
 
     The function will initialize an `Experimentor` object and run the experiments.
@@ -21,14 +21,14 @@ def run_experiments(config: list, runner: BaseExperimentRunner,
     :param log_dir: The directory to store logs. If None, no log will be
         stored.
     :param max_trial: The maximum number of trials for each configuration.
-    :param skip_exist: Skip the configuration if the log file already exists.
+    :param skip_if_exists: Skip the configuration if the log file already exists.
     :param track_log: Specify the track log object. If None and `log_dir` is
         not None, a new track log object will be created. If None and `log_dir`
         is None, no track log will be created.
     """
     Experimentor(
         config, runner, log_dir, track_log
-    ).run_experiments(max_trial, skip_exist)
+    ).run_experiments(max_trial, skip_if_exists)
 
 
 class Experimentor:
@@ -63,19 +63,19 @@ class Experimentor:
             if log_dir is not None:
                 self.track_log = TrackLog(log_dir)
 
-    def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
+    def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_if_exists=False):
         """Run experiments with the given configuration and function.
 
         This method will run the experiments with the given configuration and
         function. The method will iterate through all the configurations and
         run the function with `max_trial` trials for each configuration. If
-        `skip_exist` is True, the method will skip the configuration if the
+        `skip_if_exists` is True, the method will skip the configuration if the
         log file already exists. This is useful when you want to resume the
         experiment if that is interrupted or failed.
 
         :param max_trial: The maximum number of trials for each
             configuration.
-        :param skip_exist: Whether to skip the configuration if the
+        :param skip_if_exists: Whether to skip the configuration if the
             log file already exists.
         """
         total = count(self.config)
@@ -93,7 +93,7 @@ class Experimentor:
                         for trial in range(max_trial):
                             try:
                                 self.run_single_experiment(title, conf,
-                                                           skip_exist)
+                                                           skip_if_exists)
                                 successful = True
                                 break
                             except KeyboardInterrupt:
@@ -112,19 +112,19 @@ class Experimentor:
                     print("Interrupted")
                     raise
 
-    def run_single_experiment(self, title, config, skip_exist):
+    def run_single_experiment(self, title, config, skip_if_exists):
         """Run a single experiment with the given configuration.
 
         :param title: The title of the experiment.
         :param config: The configuration of the experiment.
-        :param skip_exist: Whether to skip the configuration if the log
+        :param skip_if_exists: Whether to skip the configuration if the log
             file already exists.
         """
         # Create log file
         file = None
         if self.track_log is not None:
             try:
-                file = self.track_log.add_log_file(title, skip_exist)
+                file = self.track_log.add_log_file(title, skip_if_exists)
                 if file is None:  # No need to run the experiment
                     return
             except Exception:
