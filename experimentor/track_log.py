@@ -37,6 +37,12 @@ class TrackLog:
             os.remove(lock_file)
 
     def init_dir(self):
+        """Initialize the directory.
+
+        If the directory does not exist, it will be created. If the lock is
+        enabled, it will create a lock file to make sure that only one process
+        is using the directory.
+        """
         os.makedirs(self.root_dir, exist_ok=True)
         if self.disable_lock:
             return
@@ -49,6 +55,20 @@ class TrackLog:
             raise ValueError("Another process is using the directory")
 
     def add_log_file(self, name: str, skip_exist: bool) -> str | None:
+        """Add a log file for the experiment with the given name.
+
+        This function will create a file named after the current time in the
+        format of '%Y_%m_%d_%H_%M_%S.log' in UTC time. If the directory for
+        the experiment does not exist, it will be created. If the directory
+        already has files, the function will skip creating the log file if
+        `skip_exist` is true.
+
+        :param name: The name of the experiment.
+        :param skip_exist: Skip creating the log file if the directory already
+            has files.
+        :return: If the log file is created, return the path to the file.
+            Otherwise, return None.
+        """
         subdir = os.path.join(self.root_dir, name)
         os.makedirs(subdir, exist_ok=True)
         if skip_exist and len(os.listdir(subdir)) > 0:
@@ -58,6 +78,15 @@ class TrackLog:
         with open(file_path, 'w'):
             pass
         return file_path
+
+    def open_latest_log_file(self, name: str):
+        """Open the latest log file for the experiment with the given name.
+
+        :param name: The name of the experiment.
+        :return: If there's no log file for the given experiment, raise a ValueError.
+            Otherwise, return the file object.
+        """
+        return open_latest_track_log_file(self.root_dir, name)
 
 
 def has_track_log(root_dir: str, name: str) -> bool:
@@ -90,3 +119,23 @@ def get_latest_track_log_file(root_dir: str, name: str) -> str | None:
         return None
     files.sort()
     return os.path.join(subdir, files[-1])
+
+
+def open_latest_track_log_file(root_dir: str, name: str):
+    """Open the latest log file for the experiment with the given name.
+
+    You can use this function to open the log file like this:
+
+    with open_track_log_file('log', 'a_c_e'):
+        # Do something
+        ...
+
+    :param root_dir: The root directory to store the log files.
+    :param name: The name of the experiment.
+    :return: If there's no log file for the given experiment, raise a ValueError.
+        Otherwise, return the file object.
+    """
+    file = get_latest_track_log_file(root_dir, name)
+    if file is None:
+        raise ValueError("No log file for the experiment")
+    return open(file, 'r')
