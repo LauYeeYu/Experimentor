@@ -4,15 +4,13 @@ configurations.
 """
 
 class ExperimentorError(Exception):
-    """
-    The exception class for the Experimentor.
+    """The exception class for the Experimentor.
     """
     pass
 
 
 class ConfigureIterable:
-    """
-    An iterable class that generates all possible configurations.
+    """An iterable class that generates all possible configurations.
     """
     class ConfigurePair:
         def __init__(self, key, value):

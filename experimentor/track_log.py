@@ -2,7 +2,7 @@ import os
 import datetime
 
 class TrackLog:
-    """Track the log files for experiments
+    """Track the log files for experiments.
 
     On initialization, it will create a lock file to make sure that only one
     process is using the directory. The lock file will be removed when the
@@ -19,9 +19,10 @@ class TrackLog:
     because improperly changing the behavior might lead to some unexpected
     results.
     """
+
     def __init__(self, root_dir: str, disable_lock=False):
-        """
-        Initialize the TrackLog object.
+        """Initialize the TrackLog object.
+
         :param root_dir: The root directory to store the log files.
         :param disable_lock: Whether to disable the lock file used to
             guarantee that only one process is using the directory.
@@ -60,8 +61,8 @@ class TrackLog:
 
 
 def has_track_log(root_dir: str, name: str) -> bool:
-    """
-    Check if there's a log file for the experiment with the given name.
+    """Check if there's a log file for the experiment with the given name.
+
     :param root_dir: The root directory to store the log files.
     :param name: The name of the experiment.
     :return: Whether there's a log file for the given experiment.
@@ -74,8 +75,8 @@ def has_track_log(root_dir: str, name: str) -> bool:
 
 
 def get_latest_track_log_file(root_dir: str, name: str) -> str | None:
-    """
-    Get the latest log file for the experiment with the given name.
+    """Get the latest log file for the experiment with the given name.
+
     :param root_dir: The root directory to store the log files.
     :param name: The name of the experiment.
     :return: If there's no log file for the given experiment, return None.

@@ -1,5 +1,4 @@
-"""
-This module improves the progress bar display in the CLI.
+"""This module improves the progress bar display in the CLI.
 
 When the stdout is a tty, the progress bar will be displayed in the stdout.
 If only the stderr is a tty, the progress bar will be displayed in the stderr.
@@ -17,8 +16,8 @@ import sys
 
 
 def tqdm_file() -> type(sys.stdout) | None:
-    """
-    Get the file to display the progress bar.
+    """Get the file to display the progress bar.
+
     :return: If stdout is a tty, return stdout. If stdout is not but stderr
         is, return stderr. Otherwise, return None.
     """
@@ -30,8 +29,7 @@ def tqdm_file() -> type(sys.stdout) | None:
         return None
 
 class CliFile(object):
-    """
-    A class to redirect the write calls to `tqdm.tqdm.write`.
+    """A class to redirect the write calls to `tqdm.tqdm.write`.
     """
     file = None
     def __init__(self, file):
@@ -47,8 +45,7 @@ class CliFile(object):
 
 @contextlib.contextmanager
 def redirect_stream_for_tqdm():
-    """
-    Redirect stdout and stderr to `CliFile` if they are tty.
+    """Redirect stdout and stderr to `CliFile` if they are tty.
     This makes the progress bar display correctly in the CLI.
 
     The yield statement is used to separate the setup and teardown code.

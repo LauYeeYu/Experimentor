@@ -8,13 +8,18 @@ from .experiment_runner import BaseExperimentRunner
 from .track_log import TrackLog
 
 
-def run_experiments(config: list, runner: BaseExperimentRunner, log_dir: str | None,
-                    max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
-    """
-    Run experiments with the given configuration and function.
+def run_experiments(config: list, runner: BaseExperimentRunner,
+                    log_dir: str | None, max_trial=DEFAULT_MAX_TRIALS,
+                    skip_exist=False):
+    """Run experiments with the given configuration and function.
+
+    The function will initialize an `Experimentor` object and run the experiments.
+
     :param config: A list of dictionaries.
-    :param runner: A class to run the experiment. Should be inherited from `experimentor.BaseExperimentRunner`.
-    :param log_dir: The directory to store logs. If None, no log will be stored.
+    :param runner: A class to run the experiment. Should be inherited from
+        `experimentor.BaseExperimentRunner`.
+    :param log_dir: The directory to store logs. If None, no log will be
+        stored.
     :param max_trial: The maximum number of trials for each configuration.
     :param skip_exist: Skip the configuration if the log file already exists.
     """
@@ -32,12 +37,16 @@ class Experimentor:
 
     If you don't want to store logs, you can set the `log_dir` to None.
     """
-    def __init__(self, config: list, runner: BaseExperimentRunner, log_dir: str | None):
-        """
-        Run experiments with the given configuration and function.
+    def __init__(self, config: list, runner: BaseExperimentRunner,
+                 log_dir: str | None):
+        """Init the Experimentor class with the given configuration
+        and function.
+
         :param config: A list of dictionaries.
-        :param runner: A class to run the experiment. Should be inherited from BaseExperimentRunner.
-        :param log_dir: The directory to store logs. If None, no log will be stored.
+        :param runner: A class to run the experiment. Should be inherited
+            from BaseExperimentRunner.
+        :param log_dir: The directory to store logs. If None, no log will
+            be stored.
         """
         self.config = config
         self.runner = runner
@@ -47,10 +56,19 @@ class Experimentor:
             self.track_log = TrackLog(log_dir)
 
     def run_experiments(self, max_trial=DEFAULT_MAX_TRIALS, skip_exist=False):
-        """
-        Run experiments with the given configuration and function.
-        :param max_trial: The maximum number of trials for each configuration.
-        :param skip_exist: Whether to skip the configuration if the log file already exists.
+        """Run experiments with the given configuration and function.
+
+        This method will run the experiments with the given configuration and
+        function. The method will iterate through all the configurations and
+        run the function with `max_trial` trials for each configuration. If
+        `skip_exist` is True, the method will skip the configuration if the
+        log file already exists. This is useful when you want to resume the
+        experiment if that is interrupted or failed.
+
+        :param max_trial: The maximum number of trials for each
+            configuration.
+        :param skip_exist: Whether to skip the configuration if the
+            log file already exists.
         """
         total = count(self.config)
         disable_tqdm = False
@@ -74,7 +92,8 @@ class Experimentor:
                                 raise
                             except Exception as e:
                                 print(e)
-                                print(f"Failed trial {trial + 1} for config {conf}")
+                                print(f"Failed trial {trial + 1} for config "
+                                      f"{conf}")
                         if not successful:
                             raise ValueError("Failed to run the function")
                         pbar.update()
@@ -86,11 +105,12 @@ class Experimentor:
                     raise
 
     def run_single_experiment(self, title, config, skip_exist):
-        """
-        Run a single experiment.
+        """Run a single experiment with the given configuration.
+
         :param title: The title of the experiment.
         :param config: The configuration of the experiment.
-        :param skip_exist: Whether to skip the configuration if the log file already exists.
+        :param skip_exist: Whether to skip the configuration if the log
+            file already exists.
         """
         # Create log file
         file = None
@@ -109,8 +129,8 @@ class Experimentor:
 
 
 def count(config) -> int:
-    """
-    Count the number of configurations.
+    """Count the number of configurations.
+
     :param config: The configuration list.
     :return: The number of configurations.
     """

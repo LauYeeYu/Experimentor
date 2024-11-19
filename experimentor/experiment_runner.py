@@ -6,8 +6,8 @@ class BaseExperimentRunner:
         pass
 
     def run_experiment(self, title: str, config: dict, file: str | None):
-        """
-        Run the experiment with the given configuration.
+        """Run the experiment with the given configuration.
+
         :param title: The title of the experiment.
         :param config: The configuration of the experiment.
         :param file: The file to store the output. If None, there's nowhere to store the output.
