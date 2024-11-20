@@ -25,5 +25,5 @@ experimentor.run_experiments(configuration, experimentor.SimpleCommandRunner("ec
 log_file = experimentor.get_latest_track_log_file('log', 'a_c_e')
 print(f'The log files for experiment \'a_c_e\' are stored at \'{log_file}\'')
 print(f'The content of the log file is:')
-with experimentor.open_latest_track_log_file('log', 'a_c_es') as f:
+with experimentor.open_latest_track_log_file('log', 'a_c_e') as f:
     print(f.read())
