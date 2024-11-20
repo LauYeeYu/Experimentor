@@ -5,15 +5,18 @@ from .cli import tqdm_file, redirect_stream_for_tqdm
 from .configure_production import ConfigureIterable, ExperimentorError
 from .const import DEFAULT_MAX_TRIALS
 from .experiment_runner import BaseExperimentRunner
-from .track_log import TrackLog
+from .track_log import BaseTrackLog, TrackLog
 
 
 def run_experiments(config: list, runner: BaseExperimentRunner,
                     log_dir: str | None, max_trial=DEFAULT_MAX_TRIALS,
-                    skip_if_exists=False, track_log: TrackLog | None = None):
+                    skip_if_exists=False, track_log: BaseTrackLog | None = None):
     """Run experiments with the given configuration and function.
 
     The function will initialize an `Experimentor` object and run the experiments.
+
+    You can specify the track log object. The object must have a method
+    called `add_log_file` to add a log file for the experiment.
 
     :param config: A list of dictionaries.
     :param runner: A class to run the experiment. Should be inherited from
@@ -43,7 +46,7 @@ class Experimentor:
     If you don't want to store logs, you can set the `log_dir` to None.
     """
     def __init__(self, config: list, runner: BaseExperimentRunner,
-                 log_dir: str | None, track_log: TrackLog | None = None):
+                 log_dir: str | None, track_log: BaseTrackLog | None = None):
         """Init the Experimentor class with the given configuration
         and function.
 

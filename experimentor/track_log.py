@@ -1,7 +1,50 @@
 import os
 import datetime
 
-class TrackLog:
+class BaseTrackLog:
+    """Base class for tracking log files for experiments.
+
+    You can inherit this class to change the behaviour. The class must have
+    a method called `add_log_file` to add a log file for the experiment.
+
+    In specific, the method should take two parameters:
+    - name: The name of the experiment.
+    - skip_if_exists: Skip creating the log file if the directory already
+      has files.
+
+    You may return str or None. Returning None will signal the caller that
+    this experiment should be skipped. Otherwise, the return value will be
+    pass to the runner (inherit from `experimentor.BaseExperimentRunner`)
+    to run the experiment as the third parameter of the runner's
+    `run_experiment` method.
+    """
+
+    def add_log_file(self, name: str, skip_if_exists: bool) -> str | None:
+        """Add a log file for the experiment with the given name.
+
+        This function is supposed to create a unique log file for the
+        experiment. But you can change the behaviour to fit your needs. But
+        please be aware that the return value will affect the internal
+        behaviour. To be specific, if the return value is None, the experiment
+        will be skipped. Otherwise, the return value will be passed to the
+        runner (inherit from `experimentor.BaseExperimentRunner`)
+        to run the experiment as the third parameter of the runner's
+        `run_experiment` method.
+
+        If you change the behaviour significantly, you may also need to
+        customize your experiment runner. See the documentation for
+        `experimentor.BaseExperimentRunner` for more information.
+
+        :param name: The name of the experiment.
+        :param skip_if_exists: Skip creating the log file if the directory
+            already has files.
+        :return: If the log file is created, return the path to the file.
+            Otherwise, return None (this indicates the experiment should be
+            skipped).
+        """
+        raise NotImplementedError
+
+class TrackLog(BaseTrackLog):
     """Track the log files for experiments.
 
     On initialization, it will create a lock file to make sure that only one
@@ -14,10 +57,6 @@ class TrackLog:
     The file name is the current time in the format of '%Y_%m_%d_%H_%M_%S.log'
     in UTC time to avoid conflicts. The log file will be stored in a
     subdirectory named after the experiment title.
-
-    You may inherit this class to change the behavior, but please be careful
-    because improperly changing the behavior might lead to some unexpected
-    results.
     """
 
     def __init__(self, root_dir: str, disable_lock=False):
@@ -27,6 +66,7 @@ class TrackLog:
         :param disable_lock: Whether to disable the lock file used to
             guarantee that only one process is using the directory.
         """
+        super().__init__()
         self.root_dir = root_dir
         self.disable_lock = disable_lock
         self.init_dir()

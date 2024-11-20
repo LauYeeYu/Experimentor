@@ -2,15 +2,42 @@ import subprocess
 
 
 class BaseExperimentRunner:
+    """The base class for experiment runners.
+
+    The experiment runner is a class to run the experiment with the given
+    configuration. The configuration is a dictionary where the key is the
+    name of the parameter, and the value is the value of the parameter.
+
+    You can inherit this class to change the behaviour. The class must have
+    a method called `run_experiment` to run a single experiment. The method
+    should take three parameters:
+
+    - title: The title of the experiment. The title is
+    used to distinguish different experiments and is therefore unique.
+    - config: The configuration of the experiment (as described above).
+    - file: The file to store the log. If None, no output will be stored.
+
+    Please note that the third parameter is just supposed to be the log file.
+    If you use the default track log object, the third parameter will be the
+    path to the log file. However, the behaviour can be changed by customizing
+    the track log object. The track log object can be anything derived from
+    `experimentor.BaseTrackLog` and the third parameter will be passed from
+    the `add_log_file` method of the track log object. See the documentation
+    for `experimentor.BaseTrackLog` for more information.
+    """
     def __init__(self):
         pass
 
     def run_experiment(self, title: str, config: dict, file: str | None):
         """Run the experiment with the given configuration.
 
+        Please note that the third parameter is just supposed to be the log
+        file. See the documentation above in this class for more information.
+
         :param title: The title of the experiment.
         :param config: The configuration of the experiment.
-        :param file: The file to store the output. If None, there's nowhere to store the output.
+        :param file: The "file" to store the output. If None, there's nowhere
+            to store the output.
         """
         raise NotImplementedError
 
