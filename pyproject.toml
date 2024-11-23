@@ -15,4 +15,4 @@ dependencies = []
 where = ["."]
 
 [project.scripts]
-tqdm = "tqdm.cli:main"
+experimentor = "experimentor.__main__:main"
