@@ -39,6 +39,9 @@ sudo python -m installer dist/*.whl
 - **Automatic iteration over multiple sets of parameters:** You don't need to
   manually set all possible combinations of parameters. Experimentor will
   automatically do this for you.
+- **Progress bar:** A progress bar will be shown to indicate the progress of
+  the experiments. If both the `stdout` and `stderr` are redirected, the
+  progress bar will not be shown.
 - **Customized maximum number of trials:** You can specify the maximum number
   of trials to run. The default value is 3.
 - **Specify the log directory:** You can specify the directory to store the
