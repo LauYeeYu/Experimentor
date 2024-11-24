@@ -21,9 +21,9 @@ def tqdm_file() -> type(sys.stdout) | None:
     :return: If stdout is a tty, return stdout. If stdout is not but stderr
         is, return stderr. Otherwise, return None.
     """
-    if sys.stdout.isatty():
+    if hasattr(sys.stdout, 'isatty') and sys.stdout.isatty():
         return sys.stdout
-    elif sys.stderr.isatty():
+    elif hasattr(sys.stderr, 'isatty') and sys.stderr.isatty():
         return sys.stderr
     else:
         return None
@@ -59,10 +59,12 @@ def redirect_stream_for_tqdm():
     """
     old_stdout = sys.stdout
     old_stderr = sys.stderr
-    if sys.stdout.isatty():
+    if hasattr(sys.stdout, 'isatty') and sys.stdout.isatty():
         sys.stdout = CliFile(sys.stdout)
-    if sys.stderr.isatty():
+    if hasattr(sys.stdout, 'isatty') and sys.stderr.isatty():
         sys.stderr = CliFile(sys.stderr)
-    yield
-    sys.stdout = old_stdout
-    sys.stderr = old_stderr
+    try:
+        yield
+    finally:
+        sys.stdout = old_stdout
+        sys.stderr = old_stderr
