@@ -44,6 +44,9 @@ class MaxTrialDemo(experimentor.BaseExperimentRunner):
             print('Experiment finished')
 
 
+if __name__ != '__main__':
+    exit()
+
 configuration = [
     { 'a': 1, 'b': 2 },
     { 'c': 3, 'd': 4 },

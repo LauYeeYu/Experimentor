@@ -49,10 +49,12 @@ configuration = [
     { 'c': 3, 'd': 4 },
 ]
 
-experimentor.run_experiments(configuration,
-                             experimentor.SimpleCommandRunner('echo'),
-                             None, track_log=track_log)
 
-# Print the directory structure
-print(f"Under 'log' dir: {os.listdir('log')}")
-print(f"Under 'log/a' dir: {os.listdir('log/a')}")
+if __name__ == '__main__':
+    experimentor.run_experiments(configuration,
+                                 experimentor.SimpleCommandRunner('echo'),
+                                 None, track_log=track_log)
+
+    # Print the directory structure
+    print(f"Under 'log' dir: {os.listdir('log')}")
+    print(f"Under 'log/a' dir: {os.listdir('log/a')}")

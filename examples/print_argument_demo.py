@@ -33,4 +33,6 @@ configuration = [
     { 'c': 3, 'd': 4 },
     { 'e': 5, 'f': 6 }
 ]
-experimentor.run_experiments(configuration, EchoExperimentRunner(), None, 1)
+
+if __name__ == '__main__':
+    experimentor.run_experiments(configuration, EchoExperimentRunner(), None, 1)

@@ -21,9 +21,10 @@ configuration = [
     { 'e': 5, 'f': 6 }
 ]
 
-experimentor.run_experiments(configuration, experimentor.SimpleCommandRunner("echo"), 'log', 1)
-log_file = experimentor.get_latest_track_log_file('log', 'a_c_e')
-print(f'The log files for experiment \'a_c_e\' are stored at \'{log_file}\'')
-print(f'The content of the log file is:')
-with experimentor.open_latest_track_log_file('log', 'a_c_e') as f:
-    print(f.read())
+if __name__ == '__main__':
+    experimentor.run_experiments(configuration, experimentor.SimpleCommandRunner("echo"), 'log', 1)
+    log_file = experimentor.get_latest_track_log_file('log', 'a_c_e')
+    print(f'The log files for experiment \'a_c_e\' are stored at \'{log_file}\'')
+    print(f'The content of the log file is:')
+    with experimentor.open_latest_track_log_file('log', 'a_c_e') as f:
+        print(f.read())

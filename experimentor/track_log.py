@@ -44,6 +44,7 @@ class BaseTrackLog:
         """
         raise NotImplementedError
 
+
 class TrackLog(BaseTrackLog):
     """Track the log files for experiments.
 

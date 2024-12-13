@@ -33,16 +33,18 @@ configuration = [
     { 'e': 5, 'f': 6 }
 ]
 
-print("First, we will run the experiment which will fail for the second "
-      "config.")
-try:
-    experimentor.run_experiments(configuration, MaxTrialDemo(), 'log', 1)
-except Exception as e:
-    print(f'An exception is thrown: {e}')
 
-print("Now, we will run the experiment again with the same configuration, "
-      "but with the `skip_if_exists` parameter set to True.")
-experimentor.run_experiments(configuration,
-                             experimentor.SimpleCommandRunner("echo"),
-                             'log', 1, skip_if_exists=True)
-print("The first experiment is skipped because the log file already exists.")
+if __name__ == '__main__':
+    print("First, we will run the experiment which will fail for the second "
+          "config.")
+    try:
+        experimentor.run_experiments(configuration, MaxTrialDemo(), 'log', 1)
+    except Exception as e:
+        print(f'An exception is thrown: {e}')
+
+    print("Now, we will run the experiment again with the same configuration, "
+          "but with the `skip_if_exists` parameter set to True.")
+    experimentor.run_experiments(configuration,
+                                 experimentor.SimpleCommandRunner("echo"),
+                                 'log', 1, skip_if_exists=True)
+    print("The first experiment is skipped because the log file already exists.")
