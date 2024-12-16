@@ -92,6 +92,8 @@ directory as their experiment name.
 The fourth argument to `run_experiments` is the maximum number of
 trails to run. Default value is 3.
 
+**For more examples, please refer to the `examples` directory.**
+
 ## License
 
 MIT License
